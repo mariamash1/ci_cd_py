@@ -13,8 +13,13 @@ pipeline {
                     if (!fileExists('venv')) {
                         sh 'python3 -m venv venv --system-site-packages'
                     }
-                    // Ensures the use of pip from within the virtual environment, bypassing activation.
-                    sh './venv/bin/python -m pip install --upgrade pip'
+                    // Attempt to upgrade pip, install if not found
+                    try {
+                        sh './venv/bin/python -m pip install --upgrade pip'
+                    } catch (any) {
+                        sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
+                        sh './venv/bin/python get-pip.py'
+                    }
                 }
             }
         }
