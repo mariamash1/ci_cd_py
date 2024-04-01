@@ -7,17 +7,18 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Create venv') {
+        stage('Setup Python Virtual Environment') {
             steps {
-                sh 'python3 -m virtualenv venv'
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    pip install -r requirements.txt
-                '''
+                script {
+                    // Check if the venv directory exists
+                    if (fileExists('venv')) {
+                        echo 'Virtual environment already exists'
+                    } else {
+                        sh 'python3 -m venv venv --system-site-packages'                      
+                        sh 'source venv/bin/activate'                        
+                        sh 'pip install --upgrade pip'
+                    }
+                }
             }
         }
         stage('Run Tests') {
