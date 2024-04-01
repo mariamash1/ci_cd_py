@@ -10,23 +10,18 @@ pipeline {
         stage('Setup Python Virtual Environment') {
             steps {
                 script {
-                    // Check if the venv directory exists
-                    if (fileExists('venv')) {
-                        echo 'Virtual environment already exists'
-                    } else {
-                        sh 'python3 -m venv venv --system-site-packages'                      
-                        sh 'source venv/bin/activate'                        
-                        sh 'pip install --upgrade pip'
+                    if (!fileExists('venv')) {
+                        sh 'python3 -m venv venv --system-site-packages'
                     }
+                    // Ensures the use of pip from within the virtual environment, bypassing activation.
+                    sh './venv/bin/python -m pip install --upgrade pip'
                 }
             }
         }
         stage('Run Tests') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    pytest test11.py
-                '''
+                // Direct use of pytest from within the virtual environment
+                sh './venv/bin/pytest test11.py'
             }
         }
         stage('Update Remote Repository') {
