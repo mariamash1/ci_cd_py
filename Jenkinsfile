@@ -7,20 +7,10 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Setup Python Virtual Environment') {
+        stage('Create virtual environment') {
             steps {
-                script {
-                    if (!fileExists('venv')) {
-                        sh 'python3 -m venv venv --system-site-packages'
-                    }
-                    // Attempt to upgrade pip, install if not found
-                    try {
-                        sh './venv/bin/python -m pip install --upgrade pip'
-                    } catch (any) {
-                        sh 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
-                        sh './venv/bin/python get-pip.py'
-                    }
-                }
+                // Create a virtual environment
+                sh 'python3 -m venv venv'
             }
         }
          stage('Install Dependencies') {
