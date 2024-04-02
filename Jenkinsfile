@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone GitHub Repo') {
+        stage('Git Checkout') {
             steps {
-                checkout scm
+                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mariamash1/ci_cd_py.git']])
             }
         }
         stage('Create virtual environment') {
@@ -16,15 +16,15 @@ pipeline {
          stage('Install Dependencies') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    pip install -r requirements.txt
+                    . venv/bin/python3 
+                   -m pip install -r requirements.txt
                 '''
             }
         }       
         stage('Run Tests') {
             steps {
                 // Direct use of pytest from within the virtual environment
-                sh './venv/bin/pytest test11.py'
+                sh './venv/bin/python3 test11.py'
             }
         }
         stage('Update Remote Repository') {
