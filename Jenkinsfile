@@ -24,7 +24,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // Direct use of pytest from within the virtual environment
-                sh './venv/bin/python3 test11.py'
+                sh './venv/bin/python3 tests11.py'
             }
         }
         stage('Update Remote Repository') {
