@@ -1,8 +1,8 @@
 import pymssql
 import pytest
 
-MSSQL_HOST = 'localhost'
-MSSQL_PORT = '1433'
+MSSQL_HOST = 192.168.0.102
+MSSQL_PORT = 1433
 MSSQL_USER = 'testUser'
 MSSQL_PASSWORD = '123456!M654321'
 MSSQL_DATABASE = 'TRN'
