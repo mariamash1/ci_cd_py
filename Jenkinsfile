@@ -29,22 +29,26 @@ pipeline {
             }
         }
         stage('Update Remote Repository') {
-            steps {
-                script {
-                    // Merge the 'dev' branch into the 'main' branch
-                    GITHUB_URL = "https://github.com/mariamash1/ci_cd_pytest.git"
-                    GITHUB_BRANCH = "main"
-                    GITHUB_MERGE_BRANCH = "dev"
+    steps {
+        script {
+            // Define the SSH URL for the GitHub repository
+            GITHUB_SSH_URL = "git@github.com:mariamash1/ci_cd_pytest.git"
+            GITHUB_BRANCH = "main"
+            GITHUB_MERGE_BRANCH = "dev"
 
-                    sh(script: """
-                        git config --global user.email "your-email@example.com"
-                        git config --global user.name "Your Name"
-                        git checkout ${GITHUB_BRANCH}
-                        git merge ${GITHUB_MERGE_BRANCH}
-                        git push https://${GITHUB_CREDENTIALS}@${GITHUB_URL} ${GITHUB_BRANCH}
-                    """, returnStdout: true)
-                }
-            }
+            // Perform Git operations
+            sh(script: """
+                export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+
+                # Switch to the target branch where you want to merge changes
+                git checkout ${GITHUB_BRANCH}
+
+                # Merge the 'dev' branch into the current branch
+                git merge ${GITHUB_MERGE_BRANCH}
+
+                # Push changes back to the remote repository using the SSH URL
+                git push ${GITHUB_SSH_URL} ${GITHUB_BRANCH}
+            """, returnStdout: true)
         }
     }
 }
