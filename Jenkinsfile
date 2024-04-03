@@ -38,7 +38,9 @@ pipeline {
                     // Perform Git operations
                     sh(script: """
                         export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-
+                        # Configure Git with a user name and email
+                        git config user.name maria
+                        git config user.email "masha.masharskaya@gmail.com"
                         # Switch to the target branch where you want to merge changes
                         git checkout ${GITHUB_BRANCH}
 
