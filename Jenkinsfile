@@ -43,7 +43,7 @@ pipeline {
                         git checkout ${GITHUB_BRANCH}
 
                         # Merge the 'dev' branch into the current branch
-                        git merge ${GITHUB_MERGE_BRANCH}
+                        git merge origin/${GITHUB_MERGE_BRANCH}
 
                         # Push changes back to the remote repository using the SSH URL
                         git push ${GITHUB_SSH_URL} ${GITHUB_BRANCH}
