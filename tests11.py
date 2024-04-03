@@ -1,8 +1,8 @@
 import pymssql
 import pytest
 
-MSSQL_SERVER = '192.168.0.102'
-MSSQL_PORT = '1433'
+MSSQL_SERVER = 'host.docker.internal,1433'
+#MSSQL_PORT = '1433'
 MSSQL_USER = 'testUser'
 MSSQL_PASSWORD = '123456!M654321'
 MSSQL_DATABASE = 'TRN'
@@ -10,7 +10,7 @@ MSSQL_DATABASE = 'TRN'
 # Fixture for the database connection
 @pytest.fixture(scope="function")
 def db_connection():
-    connection = pymssql.connect(server=MSSQL_SERVER, user=MSSQL_USER, password=MSSQL_PASSWORD, database=MSSQL_DATABASE, port=MSSQL_SERVER)
+    connection = pymssql.connect(server=MSSQL_SERVER, user=MSSQL_USER, password=MSSQL_PASSWORD, database=MSSQL_DATABASE)
     try:
         yield connection
     finally:
